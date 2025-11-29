@@ -120,7 +120,7 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/jayylab.toml)"
+eval "$(oh-my-posh init zsh --config $HOME/.config/jayylab.toml)"
 
 # keybindings
 bindkey -e
