@@ -1,0 +1,114 @@
+console_title_template = '{{ .Shell }} in {{ .Folder }}'
+version = 3
+final_space = true
+
+[secondary_prompt]
+  # Shown when a command spans multiple lines
+  template = '>> '
+  foreground = 'grey'
+  background = 'transparent'
+
+[transient_prompt]
+  # Shown when you scroll back in history (keeps things tidy)
+  template = '❯ '
+  background = 'transparent'
+  foreground_templates = [
+    '{{ if gt .Code 0 }}red{{ end }}',
+    '{{ if eq .Code 0 }}cyan{{ end }}'
+  ]
+
+# ───────────────────────────────────────────────
+# 1st line: path + git + python + node
+# ───────────────────────────────────────────────
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  # PATH
+  [[blocks.segments]]
+    type = 'path'
+    style = 'plain'
+    foreground = 'cyan'
+    background = 'transparent'
+    template = '{{ .Path }}'
+
+    [blocks.segments.properties]
+      style = 'folder'          # ~/…/project
+      cache_duration = 'none'
+
+  # GIT
+  [[blocks.segments]]
+    type = 'git'
+    style = 'plain'
+    foreground = 'p:grey'
+    background = 'transparent'
+    template = ' {{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}{{ if or (gt .Behind 0) (gt .Ahead 0) }} {{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}{{ end }}'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+      branch_icon = ''
+      commit_icon = '@'
+      fetch_status = true
+
+  # PYTHON (venv / version)
+  [[blocks.segments]]
+    type = 'python'
+    style = 'plain'
+    foreground = 'green'
+    background = 'transparent'
+    # show only when python context exists (venv, conda, etc.)
+    template = '  {{ .Full }}'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+
+  # NODE (node version)
+  [[blocks.segments]]
+    type = 'node'
+    style = 'plain'
+    foreground = 'green'
+    background = 'transparent'
+    template = ' node {{ .Full }}'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+
+# ───────────────────────────────────────────────
+# Right side: execution time (only if slow)
+# ───────────────────────────────────────────────
+[[blocks]]
+  type = 'rprompt'
+  overflow = 'hidden'
+
+  [[blocks.segments]]
+    type = 'executiontime'
+    style = 'plain'
+    foreground = 'yellow'
+    background = 'transparent'
+    template = '{{ .FormattedMs }}'
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
+      threshold = 1000          # show only if > 1s
+
+# ───────────────────────────────────────────────
+# 2nd line: actual prompt symbol
+# ───────────────────────────────────────────────
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    type = 'text'
+    style = 'plain'
+    template = '❯ '
+    background = 'transparent'
+    foreground_templates = [
+      '{{ if gt .Code 0 }}red{{ end }}',
+      '{{ if eq .Code 0 }}cyan{{ end }}'
+    ]
+
+    [blocks.segments.properties]
+      cache_duration = 'none'
