@@ -51,8 +51,10 @@ zinit light ohmyzsh/ohmyzsh
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
 zinit snippet OMZP::docker
+zinit snippet OMZP::docker-compose
 zinit snippet OMZP::python
 zinit snippet OMZP::pip
+zinit snippet OMZP::uv
 zinit snippet OMZP::command-not-found
 
 zinit light zsh-users/zsh-autosuggestions
@@ -91,3 +93,16 @@ alias gs='git status'
 # fzf (if installed)
 # ============================================================
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# ============================================================
+# Auto-start tmux
+# ============================================================
+# Start tmux automatically if:
+# - tmux is installed
+# - Not already in tmux
+# - Not in VSCode terminal
+# - Not in SSH (optional: remove this check if you want tmux in SSH)
+if command -v tmux &> /dev/null && [ -z "$TMUX" ] && [ -z "$VSCODE_INJECTION" ]; then
+  # Attach to existing session named "main" or create it
+  tmux attach-session -t main || tmux new-session -s main
+fi

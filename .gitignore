@@ -1,0 +1,9 @@
+# Tmux plugins (installed by TPM)
+tmux/.config/tmux/plugins/
+
+# Zinit plugins cache
+zsh/.zinit/
+
+# Local files
+*.local
+.DS_Store
